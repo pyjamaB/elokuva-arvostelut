@@ -4,6 +4,7 @@ from flask import redirect, render_template, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 import config
 import db
+import reviews
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -22,8 +23,7 @@ def create_item():
     review_text = request.form["review_text"]
     user_id = session["user_id"]
 
-    sql = """INSERT INTO items (title, review_text, user_id) VALUES (?, ?, ?)"""
-    db.execute(sql, [title, review_text, user_id])
+    reviews.add_review(title, review_text, user_id)
 
     return redirect("/")
 
