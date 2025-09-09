@@ -33,6 +33,21 @@ def create_item():
 
     return redirect("/")
 
+@app.route("/edit_item/<int:item_id>")
+def edit_item(item_id):
+    item = reviews.get_review(item_id)
+    return render_template("edit_item.html", item=item)
+
+@app.route("/update_item", methods=["POST"]) 
+def update_item():
+    item_id = request.form["item_id"]
+    title = request.form["title"]
+    review_text = request.form["review_text"]
+
+    reviews.update_review(item_id, title, review_text)
+
+    return redirect("/item/" + str(item_id))
+
 @app.route("/register")
 def register():
     return render_template("register.html")
