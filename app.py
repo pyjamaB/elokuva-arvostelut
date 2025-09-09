@@ -11,7 +11,13 @@ app.secret_key = config.secret_key
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    all_reviews = reviews.get_reviews()
+    return render_template("index.html", items=all_reviews)
+
+@app.route("/item/<int:item_id>")
+def show_item(item_id):
+    item = reviews.get_review(item_id)
+    return render_template("show_item.html", item=item)
 
 @app.route("/new_item")
 def new_item():
@@ -38,7 +44,7 @@ def create():
     password2 = request.form["password2"]
     if password1 != password2:
         return "VIRHE: salasanat eivät ole samat"
-    password_hash = generate_password_hash(password1)
+    password_hash = generate_password_hash(password1, method='pbkdf2')
 
     try:
         sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)"
