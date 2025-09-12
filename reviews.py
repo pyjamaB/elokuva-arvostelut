@@ -15,3 +15,7 @@ def get_review(item_id):
 def update_review(item_id, title, review_text):
     sql= """UPDATE items SET title = ?, review_text = ? WHERE id = ?"""
     db.execute(sql, [title, review_text, item_id])
+
+def delete_review(item_id):
+    sql= "DELETE FROM items WHERE id = ?"
+    db.execute(sql, [item_id])

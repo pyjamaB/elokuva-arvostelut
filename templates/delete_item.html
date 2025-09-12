@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Poista arvostelu</title>
+</head>
+
+<body>
+  <h1>Poista arvostelu</h1>
+  <p>Arvostelun poisto: {{ item.title }}</p>
+  <p>Haluatko varmasti poistaa arvostelun?</p>
+  <form action="/delete_item/{{ item.id }}" method="post">
+    <input type="submit" name="delete" value="Poista arvostelu" />
+    <input type="submit" name= "cancel" value="Peruuta" />
+  </form>
+</body>
+
+</html>
