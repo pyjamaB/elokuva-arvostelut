@@ -14,6 +14,12 @@ def index():
     all_reviews = reviews.get_reviews()
     return render_template("index.html", items=all_reviews)
 
+@app.route("/search_item")
+def search_item():
+    query = request.args.get("query")
+    results = reviews.search_reviews(query) if query else []
+    return render_template("search_item.html", query=query, results=results)
+
 @app.route("/item/<int:item_id>")
 def show_item(item_id):
     item = reviews.get_review(item_id)

@@ -19,3 +19,8 @@ def update_review(item_id, title, review_text):
 def delete_review(item_id):
     sql= "DELETE FROM items WHERE id = ?"
     db.execute(sql, [item_id])
+
+def search_reviews(query):
+    sql = """SELECT id, title FROM items WHERE review_text LIKE ? OR title LIKE ? ORDER BY id DESC"""
+    like = "%" + query + "%"
+    return db.query(sql, [like, like])
