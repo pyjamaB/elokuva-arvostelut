@@ -10,7 +10,8 @@ def get_reviews():
 
 def get_review(item_id):
     sql = """SELECT items.id, items.title, items.review_text, users.id user_id, users.username FROM items, users WHERE items.user_id = users.id AND items.id = ?"""
-    return db.query(sql, [item_id])[0]
+    result = db.query(sql, [item_id])
+    return result[0] if result else None
 
 def update_review(item_id, title, review_text):
     sql= """UPDATE items SET title = ?, review_text = ? WHERE id = ?"""
