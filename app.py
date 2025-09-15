@@ -9,6 +9,10 @@ import reviews
 app = Flask(__name__)
 app.secret_key = config.secret_key
 
+def require_login():
+    if "user_id" not in session:
+        abort(403)
+
 @app.route("/")
 def index():
     all_reviews = reviews.get_reviews()
@@ -28,10 +32,12 @@ def show_item(item_id):
     return render_template("show_item.html", item=item)
 
 @app.route("/new_item")
+@require_login
 def new_item():
     return render_template("new_item.html")
 
-@app.route("/create_item", methods=["POST"]) 
+@app.route("/create_item", methods=["POST"])
+@require_login 
 def create_item():
     title = request.form["title"]
     review_text = request.form["review_text"]
@@ -42,6 +48,7 @@ def create_item():
     return redirect("/")
 
 @app.route("/edit_item/<int:item_id>")
+@require_login
 def edit_item(item_id):
     item = reviews.get_review(item_id)
     if not item:
@@ -50,7 +57,8 @@ def edit_item(item_id):
         abort(403)
     return render_template("edit_item.html", item=item)
 
-@app.route("/update_item", methods=["POST"]) 
+@app.route("/update_item", methods=["POST"])
+@require_login 
 def update_item():
     item_id = request.form["item_id"]
     item = reviews.get_review(item_id)
@@ -66,6 +74,7 @@ def update_item():
     return redirect("/item/" + str(item_id))
 
 @app.route("/delete_item/<int:item_id>", methods=["GET", "POST"])
+@require_login
 def delete_item(item_id):
 
     item = reviews.get_review(item_id)
@@ -128,6 +137,7 @@ def login():
 
 @app.route("/logout")
 def logout():
-    del session["user_id"]
-    del session["username"]
+    if "user_id" in session:
+        del session["user_id"]
+        del session["username"]
     return redirect("/")
