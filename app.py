@@ -32,13 +32,13 @@ def show_item(item_id):
     return render_template("show_item.html", item=item)
 
 @app.route("/new_item")
-@require_login
 def new_item():
+    require_login()
     return render_template("new_item.html")
 
 @app.route("/create_item", methods=["POST"])
-@require_login 
 def create_item():
+    require_login()
     title = request.form["title"]
     review_text = request.form["review_text"]
     user_id = session["user_id"]
@@ -48,8 +48,8 @@ def create_item():
     return redirect("/")
 
 @app.route("/edit_item/<int:item_id>")
-@require_login
 def edit_item(item_id):
+    require_login()
     item = reviews.get_review(item_id)
     if not item:
         abort(404)
@@ -58,8 +58,8 @@ def edit_item(item_id):
     return render_template("edit_item.html", item=item)
 
 @app.route("/update_item", methods=["POST"])
-@require_login 
 def update_item():
+    require_login()
     item_id = request.form["item_id"]
     item = reviews.get_review(item_id)
     if not item:
@@ -74,9 +74,8 @@ def update_item():
     return redirect("/item/" + str(item_id))
 
 @app.route("/delete_item/<int:item_id>", methods=["GET", "POST"])
-@require_login
 def delete_item(item_id):
-
+    require_login()
     item = reviews.get_review(item_id)
     if not item:
         abort(404)
