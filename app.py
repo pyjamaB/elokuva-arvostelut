@@ -71,7 +71,11 @@ def update_item():
     if item["user_id"] != session["user_id"]:
         abort(403)
     title = request.form["title"]
+    if not title or  len(title) > 150:
+        abort(403)
     review_text = request.form["review_text"]
+    if not review_text or  len(review_text) > 5000:
+        abort(403)
 
     reviews.update_review(item_id, title, review_text)
 
