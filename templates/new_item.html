@@ -10,11 +10,11 @@
   <form action="/create_item" method="post">
     <p>
       Otsikko: <br />
-      <input type="text" name="title" />
+      <input type="text" name="title" maxlenght="150" required/>
     </p>
     <p>
       Arvosteluteksti: <br />
-      <textarea name="review_text" rows="30" cols=60"></textarea>
+      <textarea name="review_text" rows="30" cols=60" maxlenght="5000" required></textarea>
     </p>
     <input type="submit" value="Lisää arvostelu" />
   </form>

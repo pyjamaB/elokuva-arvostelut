@@ -40,7 +40,11 @@ def new_item():
 def create_item():
     require_login()
     title = request.form["title"]
+    if not title or  len(title) > 150:
+        abort(403)
     review_text = request.form["review_text"]
+    if not review_text or len(review_text) > 5000:
+        abort(403)
     user_id = session["user_id"]
 
     reviews.add_review(title, review_text, user_id)
