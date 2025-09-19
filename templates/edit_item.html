@@ -14,7 +14,7 @@
     </p>
     <p>
       Arvosteluteksti: <br />
-      <textarea name="review_text" rows="30" cols=60">{{ item.review_text }} maxlenght="5000" required</textarea>
+      <textarea name="review_text" rows="30" cols=60" maxlenght="5000" required>{{ item.review_text }}</textarea>
     </p>
     <input type="hidden" name="item_id" value="{{ item.id }}" />
     <input type="submit" value="Päivitä arvostelu" />
