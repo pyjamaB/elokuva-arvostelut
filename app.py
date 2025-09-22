@@ -37,7 +37,8 @@ def show_item(item_id):
     item = reviews.get_review(item_id)
     if not item:
         abort(404)
-    return render_template("show_item.html", item=item)
+    genres = reviews.get_genres(item_id)
+    return render_template("show_item.html", item=item, genres=genres)
 
 @app.route("/new_item")
 def new_item():
@@ -55,7 +56,12 @@ def create_item():
         abort(403)
     user_id = session["user_id"]
 
-    reviews.add_review(title, review_text, user_id)
+    classes = []
+    genre = request.form["genre"]
+    if genre:
+        classes.append(("Genre", genre))
+
+    reviews.add_review(title, review_text, user_id, classes)
 
     return redirect("/")
 

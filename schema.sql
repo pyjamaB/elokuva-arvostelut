@@ -10,3 +10,10 @@ CREATE TABLE items (
     review_text TEXT,
     user_id INTEGER REFERENCES users
 );
+
+CREATE TABLE genre_classes (
+    id INTEGER PRIMARY KEY,
+    item_id INTEGER REFERENCES items,
+    title TEXT,
+    value TEXT
+);
