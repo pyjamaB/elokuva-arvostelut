@@ -11,7 +11,7 @@ def get_reviews(user_id):
     return db.query(sql, [user_id])
 
 def create_user(username, password1):
-    password_hash = generate_password_hash(password1, method='pbkdf2')
+    password_hash = generate_password_hash(password1)
     sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)"
     db.execute(sql, [username, password_hash])
 
