@@ -16,22 +16,17 @@
       Arvosteluteksti: <br />
       <textarea name="review_text" rows="30" cols="60" maxlenght="5000" required></textarea>
     </p>
+    {% for class in classes %}
     <p>
-      Genre: <br />
-      <select name="genre">
+      {{ class }}: <br />
+      <select name="classes">
         <option value="">(valitse)</option>
-        <option value="draama">draama</option>
-        <option value="toiminta">toiminta</option>
-        <option value="kauhu">kauhu</option>
-        <option value="jännitys">jännitys</option>
-        <option value="komedia">komedia</option>
-        <option value="romantiikka">romantiikka</option>
-        <option value="sci-fi">sci-fi</option>
-        <option value="seikkailu">seikkailu</option>
-        <option value="animaatio">animaatio</option>
-        <option value="dokumentti">dokumentti</option>
+      {% for option in classes[class] %}
+        <option value="{{ class }}:{{ option }}">{{ option }}</option>
+      {% endfor %}
       </select>
     </p>
+    {% endfor %}
     <input type="submit" value="Lisää arvostelu" />
   </form>
 </body>
