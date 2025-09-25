@@ -57,10 +57,16 @@ def create_item():
         abort(403)
     user_id = session["user_id"]
 
+    all_classes = reviews.get_classes()
+
     classes = []
     for entry in request.form.getlist("classes"):
         if entry:
             parts = entry.split(":")
+            if parts[0] not in all_classes:
+                abort(403)
+            if parts[1] not in all_classes[parts[0]]:
+                abort(403)
             classes.append((parts[0], parts[1]))
 
     reviews.add_review(title, review_text, user_id, classes)
@@ -100,10 +106,16 @@ def update_item():
     if not review_text or  len(review_text) > 5000:
         abort(403)
 
+    all_classes = reviews.get_classes()
+
     classes = []
     for entry in request.form.getlist("classes"):
         if entry:
             parts = entry.split(":")
+            if parts[0] not in all_classes:
+                abort(403)
+            if parts[1] not in all_classes[parts[0]]:
+                abort(403)
             classes.append((parts[0], parts[1]))
 
     reviews.update_review(item_id, title, review_text, classes)
