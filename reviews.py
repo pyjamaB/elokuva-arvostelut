@@ -35,9 +35,16 @@ def get_review(item_id):
     result = db.query(sql, [item_id])
     return result[0] if result else None
 
-def update_review(item_id, title, review_text):
+def update_review(item_id, title, review_text, classes):
     sql= """UPDATE items SET title = ?, review_text = ? WHERE id = ?"""
     db.execute(sql, [title, review_text, item_id])
+
+    sql = "DELETE FROM genre_classes WHERE item_id = ?"
+    db.execute(sql, [item_id])
+
+    sql = "INSERT INTO genre_classes (item_id, title, value) VALUES (?, ?, ?)"
+    for title, value in classes:
+        db.execute(sql, [item_id, title, value])
 
 def delete_review(item_id):
     sql= "DELETE FROM items WHERE id = ?"

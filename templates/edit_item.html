@@ -17,6 +17,21 @@
       <textarea name="review_text" rows="30" cols=60" maxlenght="5000" required>{{ item.review_text }}</textarea>
     </p>
     <input type="hidden" name="item_id" value="{{ item.id }}" />
+    {% for class in classes %}
+    <p>
+      {{ class }}: <br />
+      <select name="classes">
+        <option value="">(valitse)</option>
+      {% for option in classes[class] %}
+        {% if selected_classes[class] == option %}
+        <option value="{{ class }}:{{ option }}" selected>{{ option }}</option>
+        {% else %}
+        <option value="{{ class }}:{{ option }}">{{ option }}</option>
+        {% endif %}
+      {% endfor %}
+      </select>
+    </p>
+    {% endfor %}
     <input type="submit" value="Päivitä arvostelu" />
   </form>
 </body>

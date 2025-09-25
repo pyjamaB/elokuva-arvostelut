@@ -75,7 +75,14 @@ def edit_item(item_id):
         abort(404)
     if item["user_id"] != session["user_id"]:
         abort(403)
-    return render_template("edit_item.html", item=item)
+    
+    classes = reviews.get_classes()
+    selected_classes = {}
+    for my_class in classes:
+        selected_classes[my_class] = ""
+    for entry in reviews.get_genres(item_id):
+        selected_classes[entry["title"]] = entry["value"]
+    return render_template("edit_item.html", item=item, selected_classes=selected_classes, classes=classes)
 
 @app.route("/update_item", methods=["POST"])
 def update_item():
@@ -93,7 +100,13 @@ def update_item():
     if not review_text or  len(review_text) > 5000:
         abort(403)
 
-    reviews.update_review(item_id, title, review_text)
+    classes = []
+    for entry in request.form.getlist("classes"):
+        if entry:
+            parts = entry.split(":")
+            classes.append((parts[0], parts[1]))
+
+    reviews.update_review(item_id, title, review_text, classes)
 
     return redirect("/item/" + str(item_id))
 
