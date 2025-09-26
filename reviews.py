@@ -22,6 +22,17 @@ def add_review(title, review_text, user_id, classes):
     for title, value in classes:
         db.execute(sql, [item_id, title, value])
 
+def add_message(item_id, user_id, content):
+    sql = """INSERT INTO messages (item_id, user_id, content) VALUES (?, ?, ?)"""
+    db.execute(sql, [item_id, user_id, content])
+
+def get_messages(item_id):
+    sql = """SELECT messages.content, users.id user_id, users.username
+             FROM messages, users
+             WHERE messages.item_id = ? AND messages.user_id = users.id
+             ORDER BY messages.id DESC"""
+    return db.query(sql, [item_id])
+
 def get_genres(item_id):
     sql = "SELECT title, value FROM genre_classes WHERE item_id = ?"
     return db.query(sql, [item_id])

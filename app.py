@@ -38,7 +38,25 @@ def show_item(item_id):
     if not item:
         abort(404)
     genres = reviews.get_genres(item_id)
-    return render_template("show_item.html", item=item, genres=genres)
+    messages = reviews.get_messages(item_id)
+    return render_template("show_item.html", item=item, genres=genres, messages=messages)
+
+@app.route("/create_message", methods=["POST"])
+def create_message():
+    require_login()
+    
+    content = request.form["content"]
+    if not content or len(content) > 5000:
+        abort(403)
+    item_id = request.form["item_id"]
+    item = reviews.get_review(item_id)
+    if not item:
+        abort(404)
+    user_id = session["user_id"]
+
+    reviews.add_message(item_id, user_id, content)
+
+    return redirect("/item/" + str(item_id))
 
 @app.route("/new_item")
 def new_item():

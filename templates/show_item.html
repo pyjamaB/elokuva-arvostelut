@@ -29,6 +29,19 @@
     </ul>
   </p>
   {% endif %}
+  <h2>Viestit</h2>
+  <ul>
+    {% for message in messages %}
+    <li>{{ message.content }}, <a href="/user/{{ message.user_id }}">{{ message.username }}</a></li>
+    {% endfor %}
+  </ul>
+  <h2>Uusi viesti</h2>
+  <form action="/create_message" method="post">
+    Viesti: <br />
+    <textarea name="content" rows="5" cols="40" required></textarea>
+    <input type="hidden" name="item_id" value="{{ item.id }}">
+    <input type="submit" value="Lähetä viesti" />
+  </form>
   <p>
     <a href="/">Takaisin etusivulle</a>
   </p>

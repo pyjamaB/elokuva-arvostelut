@@ -4,6 +4,13 @@ CREATE TABLE users (
     password_hash TEXT
 );
 
+CREATE TABLE messages (
+    id INTEGER PRIMARY KEY,
+    item_id INTEGER REFERENCES items,
+    user_id INTEGER REFERENCES users,
+    content TEXT
+);
+
 CREATE TABLE items (
     id INTEGER PRIMARY KEY,
     title TEXT,
