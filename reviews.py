@@ -67,3 +67,16 @@ def search_reviews(query):
     sql = """SELECT id, title FROM items WHERE review_text LIKE ? OR title LIKE ? ORDER BY id DESC"""
     like = "%" + query + "%"
     return db.query(sql, [like, like])
+
+def get_images(item_id):
+    sql = "SELECT id FROM images WHERE item_id = ?"
+    return db.query(sql, [item_id])
+
+def add_image(item_id, image):
+    sql = "INSERT INTO images (item_id, image) VALUES (?, ?)"
+    db.execute(sql, [item_id, image])
+
+def get_image(image_id):
+    sql = "SELECT image FROM images WHERE id = ?"
+    result = db.query(sql, [image_id])
+    return result[0][0] if result else None

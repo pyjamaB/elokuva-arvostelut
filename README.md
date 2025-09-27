@@ -5,6 +5,7 @@
 *  Sovelluksessa käyttäjät pystyvät jakamaan elokuva-arvostelujaan.
 *  Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään sovellukseen.
 *  Käyttäjä pystyy lisäämään elokuva-arvosteluja ja muokkaamaan ja poistamaan niitä.
+*  Käyttäjä pystyy lisäämään kuvia arvosteluun.
 *  Käyttäjä näkee sovellukseen lisätyt arvostelut.
 *  Käyttäjä pystyy etsimään arvosteluja hakusanalla.
 *  Käyttäjäsivu näyttää, montako arvostelua käyttäjä on lisännyt ja listan käyttäjän lisäämistä arvosteluista.

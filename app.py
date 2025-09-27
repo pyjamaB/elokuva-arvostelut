@@ -1,6 +1,6 @@
 import sqlite3
 from flask import Flask
-from flask import abort, redirect, render_template, request, session
+from flask import abort, make_response, redirect, render_template, request, session
 import config
 import db
 import reviews
@@ -39,7 +39,53 @@ def show_item(item_id):
         abort(404)
     genres = reviews.get_genres(item_id)
     messages = reviews.get_messages(item_id)
-    return render_template("show_item.html", item=item, genres=genres, messages=messages)
+    images = reviews.get_images(item_id)
+    return render_template("show_item.html", item=item, genres=genres, messages=messages, images=images)
+
+@app.route("/image/<int:image_id>")
+def show_image(image_id):
+    image = reviews.get_image(image_id)
+    if not image:
+        abort(404)
+
+    response = make_response(bytes(image))
+    response.headers.set("Content-Type", "image/jpeg")
+    return response
+
+@app.route("/images/<int:item_id>")
+def edit_images(item_id):
+    require_login()
+    item = reviews.get_review(item_id)
+    if not item:
+        abort(404)
+    if item["user_id"] != session["user_id"]:
+        abort(403)
+
+    images = reviews.get_images(item_id)
+
+    return render_template("images.html", item=item, images=images)
+
+@app.route("/add_image", methods=["POST"])
+def add_image():
+    require_login()
+
+    item_id = request.form["item_id"]
+    item = reviews.get_review(item_id)
+    if not item:
+        abort(404)
+    if item["user_id"] != session["user_id"]:
+        abort(403)
+
+    file = request.files["image"]
+    if not file.filename.endswith(".jpg"):
+        return "VIRHE: väärä tiedostomuoto"
+
+    image = file.read()
+    if len(image) > 100 * 1024:
+        return "VIRHE: liian suuri kuva"
+
+    reviews.add_image(item_id, image)
+    return redirect("/images/" + str(item_id))
 
 @app.route("/create_message", methods=["POST"])
 def create_message():
