@@ -87,6 +87,22 @@ def add_image():
     reviews.add_image(item_id, image)
     return redirect("/images/" + str(item_id))
 
+@app.route("/remove_images", methods=["POST"])
+def remove_images():
+    require_login()
+
+    item_id = request.form["item_id"]
+    item = reviews.get_review(item_id)
+    if not item:
+        abort(404)
+    if item["user_id"] != session["user_id"]:
+        abort(403)
+
+    for image_id in request.form.getlist("image_id"):
+        reviews.remove_image(item_id, image_id)
+
+    return redirect("/images/" + str(item_id))
+
 @app.route("/create_message", methods=["POST"])
 def create_message():
     require_login()
