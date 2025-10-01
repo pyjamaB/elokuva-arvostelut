@@ -38,11 +38,13 @@ def get_genres(item_id):
     return db.query(sql, [item_id])
 
 def get_reviews():
-    sql = "SELECT id, title FROM items ORDER BY id DESC"
+    sql = """SELECT items.id, items.title, users.id user_id, users.username
+             FROM items, users WHERE items.user_id = users.id ORDER BY items.id DESC"""
     return  db.query(sql)
 
 def get_review(item_id):
-    sql = """SELECT items.id, items.title, items.review_text, users.id user_id, users.username FROM items, users WHERE items.user_id = users.id AND items.id = ?"""
+    sql = """SELECT items.id, items.title, items.review_text, users.id user_id, users.username
+             FROM items, users WHERE items.user_id = users.id AND items.id = ?"""
     result = db.query(sql, [item_id])
     return result[0] if result else None
 
