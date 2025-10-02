@@ -3,7 +3,8 @@
 {% block title %}Muokkaa arvostelua{% endblock %}
 
 {% block content %}
-<h2>Muokkaa arvostelua</h2>
+<h2>{{ item.title }}</h2>
+<h3>Muokkaa arvostelua</h3>
 <form action="/update_item" method="post">
   <p>
     Otsikko: <br />
@@ -31,4 +32,7 @@
   {% endfor %}
   <input type="submit" value="Päivitä arvostelu" />
 </form>
+<p>
+  <a href="/item/{{ item.id }}">Takaisin arvosteluun</a>
+</p>
 {% endblock %}
