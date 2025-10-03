@@ -78,12 +78,12 @@ def add_image():
 
     file = request.files["image"]
     if not file.filename.endswith(".jpg"):
-        flash("VIRHE: väärä tiedostomuoto")
+        flash("VIRHE: Väärä tiedostomuoto")
         return redirect("/images/" + str(item_id))
 
     image = file.read()
     if len(image) > 100 * 1024:
-        flash("VIRHE: liian suuri kuva")
+        flash("VIRHE: Liian suuri kuva")
         return redirect("/images/" + str(item_id)) 
 
     reviews.add_image(item_id, image)
@@ -234,12 +234,12 @@ def create():
     password1 = request.form["password1"]
     password2 = request.form["password2"]
     if password1 != password2:
-        flash("VIRHE: salasanat eivät ole samat")
+        flash("VIRHE: Salasanat eivät ole samat")
         return redirect("/register")
     try:
         users.create_user(username, password1)
     except sqlite3.IntegrityError:
-        flash("VIRHE: tunnus on jo varattu")
+        flash("VIRHE: Tunnus on jo varattu")
         return redirect("/register")
 
     return redirect("/")
@@ -259,7 +259,7 @@ def login():
             session["username"] = username
             return redirect("/")
         else:
-            flash("VIRHE: väärä tunnus tai salasana")
+            flash("VIRHE: Väärä tunnus tai salasana")
             return redirect("/login")
 
 @app.route("/logout")
