@@ -30,6 +30,14 @@
 <ul>
   {% for message in messages %}
   <li>{{ message.content | show_lines }}, <a href="/user/{{ message.user_id }}">{{ message.username }}</a></li>
+
+  {% if message.user_id == session.user_id %}
+  <p>
+    <a href="/edit_message/{{ message.id }}">Muokkaa</a> |
+    <a href="/remove_message/{{ message.id }}">Poista</a>
+  </p>
+  {% endif %}
+  <hr />
   {% endfor %}
 </ul>
 {% if session.user_id %}

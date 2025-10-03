@@ -139,6 +139,42 @@ def create_message():
 
     return redirect("/item/" + str(item_id))
 
+@app.route("/edit_message/<int:message_id>", methods=["GET", "POST"])
+def edit_message(message_id):
+    require_login()
+
+    message = reviews.get_message(message_id)
+    if not message or message["user_id"] != session["user_id"]:
+        abort(403)
+
+    if request.method == "GET":
+        return render_template("edit_message.html", message=message)
+
+    if request.method == "POST":
+        check_csrf()
+        content = request.form["content"]
+        if len(content) > 5000:
+            abort(403)
+        reviews.update_message(message["id"], content)
+        return redirect("/item/" + str(message["item_id"]))
+
+@app.route("/remove_message/<int:message_id>", methods=["GET", "POST"])
+def remove_message(message_id):
+    require_login()
+
+    message = reviews.get_message(message_id)
+    if not message or message["user_id"] != session["user_id"]:
+        abort(403)
+
+    if request.method == "GET":
+        return render_template("remove_message.html", message=message)
+
+    if request.method == "POST":
+        check_csrf()
+        if "continue" in request.form:
+            reviews.remove_message(message["id"])
+        return redirect("/item/" + str(message["item_id"]))
+
 @app.route("/new_item")
 def new_item():
     require_login()
