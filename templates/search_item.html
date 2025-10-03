@@ -7,11 +7,11 @@
 
 <form action="/search_item" method="get">
   <p>
-    Etsi:
+    <label for="query">Etsi</label>:
     {% if query %}
-    <input type="text" name="query", value="{{ query }}">
+    <input type="text" name="query" id="query" value="{{ query }}">
     {% else %}
-    <input type="text" name="query" />
+    <input type="text" name="query" id="query"/>
     {% endif %}
   </p>
   <input type="submit" value="Etsi">
