@@ -7,6 +7,7 @@
 <h3>Poista arvostelu</h3>
 <p>Haluatko varmasti poistaa arvostelun?</p>
 <form action="/delete_item/{{ item.id }}" method="post">
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <input type="submit" name="delete" value="Poista arvostelu" />
   <input type="submit" name= "cancel" value="Peruuta" />
 </form>
