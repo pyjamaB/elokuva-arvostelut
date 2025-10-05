@@ -8,11 +8,11 @@
 <form action="/update_item" method="post">
   <p>
     <label for="title">Otsikko</label>: <br />
-    <input type="text" name="title" id="title" value="{{ item.title }}" maxlenght="150" required />
+    <input type="text" name="title" id="title" value="{{ item.title }}" maxlength="150" required />
   </p>
   <p>
     <label for="review_text">Arvosteluteksti</label>: <br />
-    <textarea name="review_text" id="review_text" rows="30" cols=60" maxlenght="5000" required>{{ item.review_text }}</textarea>
+    <textarea name="review_text" id="review_text" rows="30" cols=60" maxlength="5000" required>{{ item.review_text }}</textarea>
   </p>
   <input type="hidden" name="item_id" value="{{ item.id }}" />
   {% for class in classes %}

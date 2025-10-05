@@ -7,11 +7,11 @@
 <form action="/create_item" method="post">
   <p>
     <label for="title">Otsikko:</label> <br />
-    <input type="text" name="title" id="title" maxlenght="150" required/>
+    <input type="text" name="title" id="title" maxlength="150" required/>
   </p>
   <p>
     <label for="review_text">Arvosteluteksti:</label> <br />
-    <textarea name="review_text" id="review_text" rows="30" cols="60" maxlenght="5000" required></textarea>
+    <textarea name="review_text" id="review_text" rows="30" cols="60" maxlength="5000" required></textarea>
   </p>
   {% for class in classes %}
   <p>
