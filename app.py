@@ -51,10 +51,10 @@ def show_item(item_id):
     item = reviews.get_review(item_id)
     if not item:
         abort(404)
-    genres = reviews.get_genres(item_id)
+    classes = reviews.get_classes(item_id)
     messages = reviews.get_messages(item_id)
     images = reviews.get_images(item_id)
-    return render_template("show_item.html", item=item, genres=genres, messages=messages, images=images)
+    return render_template("show_item.html", item=item, classes=classes, messages=messages, images=images)
 
 @app.route("/image/<int:image_id>")
 def show_image(image_id):
@@ -178,7 +178,7 @@ def remove_message(message_id):
 @app.route("/new_item")
 def new_item():
     require_login()
-    classes = reviews.get_classes()
+    classes = reviews.get_all_classes()
     return render_template("new_item.html", classes=classes)
 
 @app.route("/create_item", methods=["POST"])
@@ -193,21 +193,20 @@ def create_item():
         abort(403)
     user_id = session["user_id"]
 
-    all_classes = reviews.get_classes()
+    all_classes = reviews.get_all_classes()
 
     classes = []
     for entry in request.form.getlist("classes"):
         if entry:
-            parts = entry.split(":")
-            if parts[0] not in all_classes:
+            class_title, class_value = entry.split(":")
+            if class_title not in all_classes:
                 abort(403)
-            if parts[1] not in all_classes[parts[0]]:
+            if class_value not in all_classes[class_title]:
                 abort(403)
-            classes.append((parts[0], parts[1]))
+            classes.append((class_title, class_value))
 
-    reviews.add_review(title, review_text, user_id, classes)
+    item_id = reviews.add_review(title, review_text, user_id, classes)
 
-    item_id = db.last_insert_id()
     return redirect("/item/" + str(item_id))
 
 @app.route("/edit_item/<int:item_id>")
@@ -219,11 +218,11 @@ def edit_item(item_id):
     if item["user_id"] != session["user_id"]:
         abort(403)
     
-    classes = reviews.get_classes()
+    classes = reviews.get_all_classes()
     selected_classes = {}
     for my_class in classes:
         selected_classes[my_class] = ""
-    for entry in reviews.get_genres(item_id):
+    for entry in reviews.get_classes(item_id):
         selected_classes[entry["title"]] = entry["value"]
     return render_template("edit_item.html", item=item, selected_classes=selected_classes, classes=classes)
 
@@ -244,17 +243,17 @@ def update_item():
     if not review_text or  len(review_text) > 5000:
         abort(403)
 
-    all_classes = reviews.get_classes()
+    all_classes = reviews.get_all_classes()
 
     classes = []
     for entry in request.form.getlist("classes"):
         if entry:
-            parts = entry.split(":")
-            if parts[0] not in all_classes:
+            class_title, class_value = entry.split(":")
+            if class_title not in all_classes:
                 abort(403)
-            if parts[1] not in all_classes[parts[0]]:
+            if class_value not in all_classes[class_title]:
                 abort(403)
-            classes.append((parts[0], parts[1]))
+            classes.append((class_title, class_value))
 
     reviews.update_review(item_id, title, review_text, classes)
 

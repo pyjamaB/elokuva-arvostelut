@@ -24,7 +24,7 @@ CREATE TABLE classes (
     value TEXT
 );
 
-CREATE TABLE genre_classes (
+CREATE TABLE review_classes (
     id INTEGER PRIMARY KEY,
     item_id INTEGER REFERENCES items,
     title TEXT,

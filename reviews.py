@@ -1,6 +1,6 @@
 import db
 
-def get_classes():
+def get_all_classes():
     sql = "SELECT title, value FROM classes ORDER BY id"
     result = db.query(sql)
 
@@ -18,9 +18,11 @@ def add_review(title, review_text, user_id, classes):
 
     item_id = db.last_insert_id()
 
-    sql = "INSERT INTO genre_classes (item_id, title, value) VALUES (?, ?, ?)"
-    for title, value in classes:
-        db.execute(sql, [item_id, title, value])
+    sql = "INSERT INTO review_classes (item_id, title, value) VALUES (?, ?, ?)"
+    for class_title, class_value in classes:
+        db.execute(sql, [item_id, class_title, class_value])
+    
+    return item_id
 
 def add_message(item_id, user_id, content):
     sql = """INSERT INTO messages (item_id, user_id, content) VALUES (?, ?, ?)"""
@@ -46,8 +48,8 @@ def remove_message(message_id):
     sql = "DELETE FROM messages WHERE id = ?"
     db.execute(sql, [message_id])
 
-def get_genres(item_id):
-    sql = "SELECT title, value FROM genre_classes WHERE item_id = ?"
+def get_classes(item_id):
+    sql = "SELECT title, value FROM review_classes WHERE item_id = ?"
     return db.query(sql, [item_id])
 
 def get_reviews():
@@ -65,19 +67,19 @@ def update_review(item_id, title, review_text, classes):
     sql= """UPDATE items SET title = ?, review_text = ? WHERE id = ?"""
     db.execute(sql, [title, review_text, item_id])
 
-    sql = "DELETE FROM genre_classes WHERE item_id = ?"
+    sql = "DELETE FROM review_classes WHERE item_id = ?"
     db.execute(sql, [item_id])
 
-    sql = "INSERT INTO genre_classes (item_id, title, value) VALUES (?, ?, ?)"
-    for title, value in classes:
-        db.execute(sql, [item_id, title, value])
+    sql = "INSERT INTO review_classes (item_id, title, value) VALUES (?, ?, ?)"
+    for class_title, class_value in classes:
+        db.execute(sql, [item_id, class_title, class_value])
 
 def delete_review(item_id):
     sql= "DELETE FROM messages WHERE item_id = ?"
     db.execute(sql, [item_id])
     sql= "DELETE FROM images WHERE item_id = ?"
     db.execute(sql, [item_id])
-    sql = "DELETE FROM genre_classes WHERE item_id = ?"
+    sql = "DELETE FROM review_classes WHERE item_id = ?"
     db.execute(sql, [item_id])
     sql= "DELETE FROM items WHERE id = ?"
     db.execute(sql, [item_id])

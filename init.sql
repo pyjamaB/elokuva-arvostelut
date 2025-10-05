@@ -10,3 +10,9 @@ INSERT INTO classes(title, value) VALUES ('Genre', 'sci-fi');
 INSERT INTO classes(title, value) VALUES ('Genre', 'seikkailu');
 INSERT INTO classes(title, value) VALUES ('Genre', 'animaatio');
 INSERT INTO classes(title, value) VALUES ('Genre', 'dokumentti');
+
+INSERT INTO classes (title, value) VALUES ('Tähdet', '* yksi tähti');
+INSERT INTO classes (title, value) VALUES ('Tähdet', '** kaksi tähteä');
+INSERT INTO classes (title, value) VALUES ('Tähdet', '*** kolme tähteä');
+INSERT INTO classes (title, value) VALUES ('Tähdet', '**** neljä tähteä');
+INSERT INTO classes (title, value) VALUES ('Tähdet', '***** viisi tähteä');
