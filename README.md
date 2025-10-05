@@ -9,7 +9,7 @@
 *  Käyttäjä näkee sovellukseen lisätyt arvostelut.
 *  Käyttäjä pystyy etsimään arvosteluja hakusanalla.
 *  Käyttäjäsivu näyttää, montako arvostelua käyttäjä on lisännyt ja listan käyttäjän lisäämistä arvosteluista.
-*  Käyttäjä pystyy valitsemaan arvostelulle yhden tai useamman luokittelun (esim. draama, komedia, jännitys, toiminta).
+*  Käyttäjä pystyy valitsemaan arvostelulle yhden tai useamman luokittelun (esim. elokuvagenre ja tähtiluokitus).
 *  Käyttäjä pystyy antamaan arvostelulle kommentin sekä muokkaamaan ja poistamaan kommenttejaan. Arvosteluista näytetään kommentit.
 
 ## Sovelluksen asennusohjeet
