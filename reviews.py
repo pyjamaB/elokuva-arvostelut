@@ -1,5 +1,9 @@
 import db
 
+def review_count():
+    sql = "SELECT COUNT(*) FROM items"
+    return db.query(sql)[0][0]
+
 def get_all_classes():
     sql = "SELECT title, value FROM classes ORDER BY id"
     result = db.query(sql)
@@ -52,10 +56,13 @@ def get_classes(item_id):
     sql = "SELECT title, value FROM review_classes WHERE item_id = ?"
     return db.query(sql, [item_id])
 
-def get_reviews():
+def get_reviews(page, page_size):
     sql = """SELECT items.id, items.title, users.id user_id, users.username
-             FROM items, users WHERE items.user_id = users.id ORDER BY items.id DESC"""
-    return  db.query(sql)
+             FROM items, users WHERE items.user_id = users.id ORDER BY items.id DESC
+             LIMIT ? OFFSET ?"""
+    limit = page_size
+    offset = page_size * (page - 1)
+    return  db.query(sql, [limit, offset])
 
 def get_review(item_id):
     sql = """SELECT items.id, items.title, items.review_text, users.id user_id, users.username
