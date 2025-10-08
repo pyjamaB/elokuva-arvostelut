@@ -165,7 +165,7 @@ def edit_message(message_id):
     if request.method == "POST":
         check_csrf()
         content = request.form["content"]
-        if len(content) > 5000:
+        if not content or  len(content) > 5000:
             abort(403)
         reviews.update_message(message["id"], content)
         return redirect("/item/" + str(message["item_id"]))
@@ -300,6 +300,9 @@ def create():
     username = request.form["username"]
     password1 = request.form["password1"]
     password2 = request.form["password2"]
+    if not username or not password1:
+        flash("VIRHE: Käyttäjänimi ja salasana vaaditaan")
+        return redirect("/register")
     if password1 != password2:
         flash("VIRHE: Salasanat eivät ole samat")
         return redirect("/register")
@@ -309,6 +312,7 @@ def create():
         flash("VIRHE: Tunnus on jo varattu")
         return redirect("/register")
 
+    flash("Rekisteröityminen onnistui!")
     return redirect("/")
 
 @app.route("/login", methods=["GET", "POST"])
@@ -325,6 +329,7 @@ def login():
             session["user_id"] = user_id
             session["username"] = username
             session["csrf_token"] = secrets.token_hex(16)
+            flash("Kirjautuminen onnistui!")
             return redirect("/")
         else:
             flash("VIRHE: Väärä tunnus tai salasana")
@@ -335,4 +340,5 @@ def logout():
     if "user_id" in session:
         del session["user_id"]
         del session["username"]
+    flash("Olet nyt kirjautunut ulos")
     return redirect("/")
