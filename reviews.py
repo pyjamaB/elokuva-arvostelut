@@ -25,7 +25,7 @@ def add_review(title, review_text, user_id, classes):
     sql = "INSERT INTO review_classes (item_id, title, value) VALUES (?, ?, ?)"
     for class_title, class_value in classes:
         db.execute(sql, [item_id, class_title, class_value])
-    
+
     return item_id
 
 def add_message(item_id, user_id, content):
@@ -92,7 +92,8 @@ def delete_review(item_id):
     db.execute(sql, [item_id])
 
 def search_reviews(query):
-    sql = """SELECT id, title FROM items WHERE review_text LIKE ? OR title LIKE ? ORDER BY id DESC"""
+    sql = """SELECT id, title FROM items WHERE review_text
+             LIKE ? OR title LIKE ? ORDER BY id DESC"""
     like = "%" + query + "%"
     return db.query(sql, [like, like])
 

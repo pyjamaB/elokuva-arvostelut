@@ -1,11 +1,10 @@
-import markupsafe
+import sqlite3
 import math
 import secrets
-import sqlite3
+import markupsafe
 from flask import Flask
 from flask import abort, flash, make_response, redirect, render_template, request, session
 import config
-import db
 import reviews
 import users
 
@@ -40,7 +39,7 @@ def index(page=1):
         return redirect("/1")
     if page > page_count:
         return redirect("/" + str(page_count))
-    
+
     all_reviews = reviews.get_reviews(page, page_size)
     return render_template("index.html", page=page, page_count=page_count, items=all_reviews)
 
@@ -49,8 +48,8 @@ def show_user(user_id):
     user = users.get_user(user_id)
     if not user:
         abort(404)
-    reviews = users.get_reviews(user_id)
-    return render_template("show_user.html", user=user, reviews=reviews)
+    all_reviews = users.get_reviews(user_id)
+    return render_template("show_user.html", user=user, reviews=all_reviews)
 
 @app.route("/search_item")
 def search_item():
@@ -66,7 +65,8 @@ def show_item(item_id):
     classes = reviews.get_classes(item_id)
     messages = reviews.get_messages(item_id)
     images = reviews.get_images(item_id)
-    return render_template("show_item.html", item=item, classes=classes, messages=messages, images=images)
+    return render_template("show_item.html", item=item,
+                           classes=classes, messages=messages, images=images)
 
 @app.route("/image/<int:image_id>")
 def show_image(image_id):
@@ -111,7 +111,7 @@ def add_image():
     image = file.read()
     if len(image) > 100 * 1024:
         flash("VIRHE: Liian suuri kuva")
-        return redirect("/images/" + str(item_id)) 
+        return redirect("/images/" + str(item_id))
 
     reviews.add_image(item_id, image)
     return redirect("/images/" + str(item_id))
@@ -137,7 +137,7 @@ def remove_images():
 def create_message():
     require_login()
     check_csrf()
-    
+
     content = request.form["content"]
     if not content or len(content) > 5000:
         abort(403)
@@ -229,14 +229,15 @@ def edit_item(item_id):
         abort(404)
     if item["user_id"] != session["user_id"]:
         abort(403)
-    
+
     classes = reviews.get_all_classes()
     selected_classes = {}
     for my_class in classes:
         selected_classes[my_class] = ""
     for entry in reviews.get_classes(item_id):
         selected_classes[entry["title"]] = entry["value"]
-    return render_template("edit_item.html", item=item, selected_classes=selected_classes, classes=classes)
+    return render_template("edit_item.html", item=item,
+                           selected_classes=selected_classes, classes=classes)
 
 @app.route("/update_item", methods=["POST"])
 def update_item():
@@ -289,7 +290,7 @@ def delete_item(item_id):
             reviews.delete_review(item_id)
             return redirect("/")
         else:
-            return redirect("/item/" + str(item_id))       
+            return redirect("/item/" + str(item_id))
 
 @app.route("/register")
 def register():
