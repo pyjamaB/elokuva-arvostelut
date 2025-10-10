@@ -3,7 +3,6 @@
 Alla on raportti, jonka Pylint antaa sovelluksesta:
 
 ...
-
 ************* Module app
 app.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 app.py:14:0: C0116: Missing function or method docstring (missing-function-docstring)
@@ -84,10 +83,8 @@ Käyn seuraavaksi läpi raportin sisällön ja perustelen, miksi raportissa main
 Suurin osa raportin ilmoituksista koskee docstringiä seuraavaan tapaan:
 
 ...
-
 db.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 db.py:4:0: C0116: Missing function or method docstring (missing-function-docstring)D
-
 ...
 
 Pylint antaa nämä ilmoitukset, koska en ole käyttänyt docstring-kommentteja sovelluksessani. Docstring-kommentit eivät kuulu kurssin vaatimuksiin, joten olen tietoisesti jättänyt ne pois.
@@ -98,9 +95,7 @@ Pylint antaa nämä ilmoitukset, koska en ole käyttänyt docstring-kommentteja 
 Pylint-ilmoitusten joukossa on muutama ilmoitus tarpeettomista else-haaroista:
 
 ...
-
 users.py:25:4: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
-
 ...
 
 Kurssin materiaalin tavoin katson, että näissä tapauksissa koodi on selkeämpää else-haarojen kanssa, joten olen jättänyt ne koodiin.
@@ -110,9 +105,7 @@ Kurssin materiaalin tavoin katson, että näissä tapauksissa koodi on selkeämp
 Ilmoituksissa on useampi seuraavanlainen ilmoitus:
 
 ...
-
 app.py:155:0: R1710: Either all return statements in a function should return an expression, or none of them should. (inconsistent-return-statements)
-
 ...
 
 Näissä tilanteissa funktio käsittelee metodit GET ja POST, mutta ei muita metodeita. Koska funktion dekoraattorin vaatimuksena on joko GET tai POST, niin ei ole riskiä siitä, ettei funktio palauttaisi mitään arvoa.
@@ -122,9 +115,7 @@ Näissä tilanteissa funktio käsittelee metodit GET ja POST, mutta ei muita met
 Raportissa nousee esiin useampi ilmoitus, joka koskee vaarallista oletusarvoa:
 
 ...
-
 db.py:10:0: W0102: Dangerous default value [] as argument (dangerous-default-value)
-
 ...
 
 Parametrin oletusarvona on tyhjä lista, josta voi muodostua ongelma, jos sama oletusarvoinen tyhjä lista on jaettu kaikkien funktion kutsujen kesken ja listaa jostain syystä muutettaisiin jossain kutsussa. Tällöin muutos välittyisi myös muihin kutsuihin. Koska koodi ei muuta listaa, tästä ei käytännössä muodostu ongelmaa.
