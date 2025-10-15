@@ -27,7 +27,7 @@
   </li>  
 {% endfor %}
 {% if results %}
-<p>
+<p class="page-nav">
   {% if page > 1 %}
     <a href="{{ url_for("search_item", query=query, page=page-1) }}">&lt;&lt;</a>
   {% endif %}
