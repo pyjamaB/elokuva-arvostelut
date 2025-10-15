@@ -4,6 +4,12 @@ def review_count():
     sql = "SELECT COUNT(*) FROM items"
     return db.query(sql)[0][0]
 
+def search_count(query):
+    sql = """SELECT COUNT(*) FROM items WHERE review_text
+             LIKE ? OR title LIKE ?"""
+    like = "%" + query + "%"
+    return db.query(sql, [like, like])[0][0]
+
 def get_all_classes():
     sql = "SELECT title, value FROM classes ORDER BY id"
     result = db.query(sql)
@@ -91,11 +97,14 @@ def delete_review(item_id):
     sql= "DELETE FROM items WHERE id = ?"
     db.execute(sql, [item_id])
 
-def search_reviews(query):
+def search_reviews(query, page, page_size):
     sql = """SELECT id, title FROM items WHERE review_text
-             LIKE ? OR title LIKE ? ORDER BY id DESC"""
+             LIKE ? OR title LIKE ? ORDER BY id DESC
+             LIMIT ? OFFSET ?"""
     like = "%" + query + "%"
-    return db.query(sql, [like, like])
+    limit = page_size
+    offset = page_size * (page - 1)
+    return db.query(sql, [like, like, limit, offset])
 
 def get_images(item_id):
     sql = "SELECT id FROM images WHERE item_id = ?"

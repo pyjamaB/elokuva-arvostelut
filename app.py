@@ -1,4 +1,4 @@
-import sqlite3
+import math, sqlite3
 import math
 import secrets
 import markupsafe
@@ -8,8 +8,21 @@ import config
 import reviews
 import users
 
+import time
+from flask import g
+
 app = Flask(__name__)
 app.secret_key = config.SECRET_KEY
+
+@app.before_request
+def before_request():
+    g.start_time = time.time()
+
+@app.after_request
+def after_request(response):
+    elapsed_time = round(time.time() - g.start_time, 2)
+    print("elapsed time:", elapsed_time, "s")
+    return response
 
 def require_login():
     if "user_id" not in session:
@@ -54,8 +67,14 @@ def show_user(user_id):
 @app.route("/search_item")
 def search_item():
     query = request.args.get("query")
-    results = reviews.search_reviews(query) if query else []
-    return render_template("search_item.html", query=query, results=results)
+    page = int(request.args.get("page", 1))
+    page_size = 10
+    result_count = reviews.search_count(query) if query else 0
+    page_count = math.ceil(result_count / page_size)
+    page_count = max(page_count, 1)
+    
+    results = reviews.search_reviews(query, page, page_size) if query else []
+    return render_template("search_item.html", page=page, page_count=page_count, query=query, results=results)
 
 @app.route("/item/<int:item_id>")
 def show_item(item_id):
