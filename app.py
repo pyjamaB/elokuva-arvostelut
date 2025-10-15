@@ -1,15 +1,14 @@
-import math, sqlite3
 import math
+import time
+import sqlite3
 import secrets
 import markupsafe
 from flask import Flask
-from flask import abort, flash, make_response, redirect, render_template, request, session
+from flask import g, abort, flash, make_response, redirect, render_template, request, session
 import config
 import reviews
 import users
 
-import time
-from flask import g
 
 app = Flask(__name__)
 app.secret_key = config.SECRET_KEY
@@ -72,9 +71,10 @@ def search_item():
     result_count = reviews.search_count(query) if query else 0
     page_count = math.ceil(result_count / page_size)
     page_count = max(page_count, 1)
-    
+
     results = reviews.search_reviews(query, page, page_size) if query else []
-    return render_template("search_item.html", page=page, page_count=page_count, query=query, results=results)
+    return render_template("search_item.html", page=page,
+                           page_count=page_count, query=query, results=results)
 
 @app.route("/item/<int:item_id>")
 def show_item(item_id):
@@ -323,8 +323,8 @@ def create():
     if len(username) < 3 or len(username) > 20:
         flash("VIRHE: Käyttäjänimen pituus tulee olla 3-20  merkkiä")
         return redirect("/register")
-    if len(password1) < 5:           
-        flash("VIRHE: Salasanan tulee olla vähintään 5 merkkiä") 
+    if len(password1) < 5:
+        flash("VIRHE: Salasanan tulee olla vähintään 5 merkkiä")
         return redirect("/register")
     if password1 != password2:
         flash("VIRHE: Salasanat eivät ole samat")
