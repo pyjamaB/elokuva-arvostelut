@@ -36,3 +36,6 @@ CREATE TABLE images (
     item_id INTEGER REFERENCES items,
     image BLOB
 );
+
+CREATE INDEX idx_review_users ON items (user_id);
+CREATE INDEX idx_review_messages ON messages (item_id);
